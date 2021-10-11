@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Movies</title>
+    <title>Movies search engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <style>
+    * {
+        font-family: 'Roboto', sans-serif;
+    }
     #container {
         background-color: #ECEFF1;
-        width: 50%;
+        width: 40%;
         margin: auto;
         margin-top: 3%;
         text-align: center;
@@ -17,7 +23,7 @@
         
     }
     #container > img {
-        width: 35%;
+        width: 40%;
     }
 </style>
 <body>
@@ -45,9 +51,10 @@
         parent.style.padding=3+"%";
         parent.style.border="5px solid #CFD8DC";
         if(data.Response=="False") {
-            let title=document.createElement("h4");
-            title.innerText="Movie not Found";
-            parent.append(title);
+            let image=document.createElement("img");
+            image.src="https://c.tenor.com/IHdlTRsmcS4AAAAC/404.gif";
+            image.style.width="60%"
+            parent.append(image);
         } else {
 
         let image=document.createElement("img");
@@ -57,35 +64,46 @@
         title.innerText=data.Title;
 
         let actors=document.createElement("p");
-        actors.innerText=data.Actors;
+        actors.innerText="Actors : "+data.Actors;
 
         let releasedategory=document.createElement("p");
-        releasedategory.innerText=data.Released
+        releasedategory.innerText="Released on : "+data.Released
 
         let rating=document.createElement("p");
-        rating.innerText=data.imdbRating;
+        rating.innerText="IMDB Rating : "+data.imdbRating;
 
         let genre=document.createElement("p");
-        genre.innerText=data.Genre;
+        genre.innerText="Genre : "+data.Genre;
 
         let language=document.createElement("p");
-        language.innerText=data.Language;
+        language.innerText="Language : "+data.Language;
 
         let director=document.createElement("p");
-        director.innerText=data.Director;
+        director.innerText="Director : "+data.Director;
 
+        function div() {
+            if(data.imdbRating>=8.5) {
+            var newdiv=document.createElement("div");
+            newdiv.style.backgroundColor="yellow";
+            newdiv.style.width="40%";
+            newdiv.style.fontSize="99%";
+            newdiv.style.height="20px";
+            newdiv.style.margin="auto";
+            var p=document.createElement("p");
+            p.innerText="Recommended";
+            p.style.fontWeight="bold";
+            newdiv.append(p);
 
-        console.log('image:', image);
-        console.log('title:', title);
-        console.log('actors:', actors);
-        console.log('releasedategory:', releasedategory);
-        console.log('rating:', rating);
-        console.log('genre:', genre);
-        console.log('language:', language);
-        console.log('director:', director);
-
-
+            parent.append(newdiv);
+        }
+        }
+        div()
+        
+      
         parent.append(image,title,director,actors,releasedategory,rating,genre,language);
+
+
+
         }
     }
 
