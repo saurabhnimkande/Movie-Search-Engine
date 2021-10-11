@@ -6,9 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Movies</title>
 </head>
+<style>
+    #container {
+        background-color: #ECEFF1;
+        width: 50%;
+        margin: auto;
+        margin-top: 3%;
+        text-align: center;
+        border-radius: 5%;
+        
+    }
+    #container > img {
+        width: 35%;
+    }
+</style>
 <body>
-    <h2>New Movies</h2>
-    <label>Search Movie</label>
+    <h2>Movie Search Engine</h2>
+    <label>Search Movie : </label>
     <input type="text" id="moviename" placeholder="Enter Movie Name"></>
     <button onclick="getData()">Search</button>
     <div id="container">
@@ -16,12 +30,64 @@
     </div>
 </body>
 <script>
+    let parent=document.getElementById("container");
     async function getData() {
         let moviename = document.getElementById("moviename").value;
         let res= await fetch(`http://www.omdbapi.com/?t=${moviename}&apikey=4f5575dc`);
         let data=await res.json();
         console.log(data);
+        displayData(data);
     }
-    getData();
+
+
+    function displayData(data) {
+        parent.innerHTML=null;
+        parent.style.padding=3+"%";
+        parent.style.border="5px solid #CFD8DC";
+        if(data.Response=="False") {
+            let title=document.createElement("h4");
+            title.innerText="Movie not Found";
+            parent.append(title);
+        } else {
+
+        let image=document.createElement("img");
+        image.src=data.Poster;
+    
+        let title=document.createElement("h3");
+        title.innerText=data.Title;
+
+        let actors=document.createElement("p");
+        actors.innerText=data.Actors;
+
+        let releasedategory=document.createElement("p");
+        releasedategory.innerText=data.Released
+
+        let rating=document.createElement("p");
+        rating.innerText=data.imdbRating;
+
+        let genre=document.createElement("p");
+        genre.innerText=data.Genre;
+
+        let language=document.createElement("p");
+        language.innerText=data.Language;
+
+        let director=document.createElement("p");
+        director.innerText=data.Director;
+
+
+        console.log('image:', image);
+        console.log('title:', title);
+        console.log('actors:', actors);
+        console.log('releasedategory:', releasedategory);
+        console.log('rating:', rating);
+        console.log('genre:', genre);
+        console.log('language:', language);
+        console.log('director:', director);
+
+
+        parent.append(image,title,director,actors,releasedategory,rating,genre,language);
+        }
+    }
+
 </script>
 </html>
