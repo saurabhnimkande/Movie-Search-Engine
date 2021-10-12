@@ -32,7 +32,6 @@
     }
     #search_results {
         position: absolute;
-        border: 1px solid black;
         width: 260px;
         height:200px;
         box-sizing: border-box;
@@ -43,11 +42,15 @@
         padding:0px;
         visibility: hidden;
     }
+    #search_results::-webkit-scrollbar {
+    display: none;
+    }
     .search_results_visible {
         visibility: visible;
     }
     #search_results > div:hover {
-        background-color:gray;
+        background-color:#ebebeb;
+        cursor: pointer;
     }
     #search_results > div {
         box-sizing: border-box;
@@ -74,6 +77,14 @@
         console.log(data);
         displayData(data);
     }
+
+    async function getData1(moviename) {
+        let res= await fetch(`http://www.omdbapi.com/?t=${moviename}&apikey=4f5575dc`);
+        let data=await res.json();
+        console.log(data);
+        displayData(data);
+    }
+
 
 
     function displayData(data) {
@@ -168,6 +179,10 @@
         movies_div.innerHTML=null;
         movies.forEach(function(movie) {
             let newdiv = document.createElement('div');
+            newdiv.onclick=function() {
+                getData1(movie.Title);
+                movies_div.style.visibility="hidden";
+            }
             let p=document.createElement('p');
             p.innerText=movie.Title
             newdiv.append(p);
@@ -205,7 +220,10 @@
 
         if(name.length==0) {
             movies_div.style.visibility="hidden";
+            movies_div.innerHTML=null;
         }
+
+       
 
         if(timerId) {
             clearTimeout(timerId);
