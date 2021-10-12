@@ -25,12 +25,42 @@
     #container > img {
         width: 40%;
     }
+    #moviename {
+        width: 250px;
+        height:30px;
+        padding-left: 5px;
+    }
+    #search_results {
+        position: absolute;
+        border: 1px solid black;
+        width: 260px;
+        height:200px;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        margin:0px;
+        padding:0px;
+        visibility: hidden;
+    }
+    .search_results_visible {
+        visibility: visible;
+    }
+    #search_results > div:hover {
+        background-color:gray;
+    }
+    #search_results > div {
+        box-sizing: border-box;
+        padding-left: 10px;
+    }
 </style>
 <body>
     <h2>Movie Search Engine</h2>
-    <label>Search Movie : </label>
-    <input type="text" id="moviename" placeholder="Enter Movie Name"></>
+    <input type="text" oninput="debounce(main,1000)" id="moviename" placeholder="Enter Movie Name"></>
     <button onclick="getData()">Search</button>
+    <div id="search_results">
+      
+    </div>
     <div id="container">
 
     </div>
@@ -106,6 +136,97 @@
 
         }
     }
+
+
+
+
+
+
+
+      var timerId;
+      let movies_div=document.getElementById("search_results");
+
+    async function searchMovies(movie_name) {
+        try{
+        let res=await fetch(`https://www.omdbapi.com/?apikey=4f5575dc&s=${movie_name}`);
+
+        let data =await res.json();
+    
+        return data;
+        } catch (e) {
+            console.log('e:', e);
+        }
+        
+    }
+
+
+    function appendMovies(movies) {
+        if(movies==undefined) {
+            return false;
+        }
+
+        movies_div.innerHTML=null;
+        movies.forEach(function(movie) {
+            let newdiv = document.createElement('div');
+            let p=document.createElement('p');
+            p.innerText=movie.Title
+            newdiv.append(p);
+            movies_div.append(newdiv);
+
+
+        })
+
+
+    }
+
+
+
+    async function main() {
+        let name=document.getElementById("moviename").value;
+
+        if(name.length<3) {
+            return false;
+        }
+
+
+       let res= await searchMovies(name);
+     
+        let movies_data=res.Search;
+        console.log('movies_data:', movies_data);
+
+        appendMovies(movies_data);
+        
+    }
+
+    function debounce(func,delay) {
+        let name=document.getElementById("moviename").value;
+        movies_div.className="search_results_visible";
+        movies_div.style.visibility="visible";
+
+        if(name.length==0) {
+            movies_div.style.visibility="hidden";
+        }
+
+        if(timerId) {
+            clearTimeout(timerId);
+        }
+
+
+       timerId= setTimeout(function() {
+            func();
+        },delay)
+
+
+
+    }
+
+
+
+
+
+
+
+
 
 </script>
 </html>
