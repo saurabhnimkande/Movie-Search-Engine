@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Trending List</title>
+    <link id="API-Docs-Favicon" href="//www.themoviedb.org/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+</head>
+<style>
+     * {
+        font-family: 'Roboto', sans-serif;
+    }
+    #container {
+        display: grid;
+        grid-template-columns: repeat(4,25%);
+        
+        row-gap: 40px;
+       
+    }
+    #container > div > img {
+        width: 250px;
+        border-radius: 10px 10px 0 0;
+    }
+    #container > div {
+        width: 250px;
+        margin-left: 15%;
+        border-radius:10px;
+        box-shadow: 0 0 10px #a0a0a0;
+    }
+    #container > div > p {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    #container > div > h3 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+</style>
+<body>
+    <h1 style="text-align:center;">Trending Movies</h1>
+    <div id="container">
+
+    </div>
+</body>
+<script>
+    let parent=document.getElementById("container");
+    async function getData() {
+        let res= await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=9b384d77eac5efad6f058d1fab065086&language=en-US&page=1`);
+        let data= await res.json();
+        let movies=data.results;
+        console.log('movies:', movies);
+        appendData(movies);
+    }
+
+
+    function appendData(data) {
+
+        data.forEach(function(ele) {
+            let movieposterid=ele.poster_path;
+
+            let div =document.createElement('div');
+
+            let img = document.createElement('img');
+            img.src=`https://image.tmdb.org/t/p/w500${movieposterid}`;
+
+            let title = document.createElement('h3');
+            title.innerText=ele.original_title;
+
+            let relesed=document.createElement('p');
+            relesed.innerText=ele.original_title;
+
+            let rating = document.createElement('p');
+            rating.innerText=ele.vote_average;
+
+
+            div.append(img,title,relesed,rating);
+
+            parent.append(div);
+
+            
+
+
+
+        });
+
+
+
+    }
+
+
+
+
+
+
+    getData();
+</script>
+</html>
