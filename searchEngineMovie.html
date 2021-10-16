@@ -7,8 +7,8 @@
     <title>Movies search engine</title>
     <link id="API-Docs-Favicon" href="//www.themoviedb.org/favicon.ico" type="image/x-icon" rel="shortcut icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <style>
     * {
@@ -33,6 +33,7 @@
     }
     #search_results {
         position: absolute;
+        top: 105px;
         width: 260px;
         height:200px;
         box-sizing: border-box;
@@ -42,6 +43,7 @@
         margin:0px;
         padding:0px;
         visibility: hidden;
+        
     }
     #search_results::-webkit-scrollbar {
     display: none;
@@ -57,12 +59,21 @@
         box-sizing: border-box;
         padding-left: 10px;
     }
+    #userloginname {
+        position: relative;
+        top: -80px;
+        margin-left: 80%;
+    }
 </style>
 <body>
     <h2>Movie Search Engine</h2>
     <input type="text" oninput="debounce(main,1000)" id="moviename" placeholder="Enter Movie Name"></>
     <button onclick="getData()">Search</button>
     <a href="toptrending.html"><button>Top Trending Movies</button></a>
+    <div id="userloginname">
+        <a href="Login.html"><button>Login</button></a>
+        <a href="signup.html"><button>Signup</button></a>
+    </div>
     <div id="search_results">
         
     </div>
@@ -71,6 +82,27 @@
     </div>
 </body>
 <script>
+
+        let datastorage=JSON.parse(localStorage.getItem("username"));
+
+        if(datastorage) {
+        let divone=document.getElementById("userloginname");
+
+        divone.innerHTML=null;
+        let p=document.createElement("p");
+        p.innerText=datastorage.username;
+        p.style.marginTop="10px";
+        divone.appendChild(p);
+
+        }
+
+
+
+
+
+
+
+
     let parent=document.getElementById("container");
     async function getData() {
         let moviename = document.getElementById("moviename").value;
